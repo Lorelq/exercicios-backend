@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Classe Barco
+class Barco {
+    private String nome;
+    private int tamanho;
+
+    public Barco(String nome, int tamanho) {
+        this.nome = nome;
+        this.tamanho = tamanho;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getTamanho() {
+        return tamanho;
+    }
+}
+
+// Classe BasePorto
+class BasePorto {
+    private String nome;
+    protected List<Barco> barcosAtracados;
+
+    public BasePorto(String nome) {
+        this.nome = nome;
+        this.barcosAtracados = new ArrayList<>();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public List<Barco> getBarcosAtracados() {
+        return barcosAtracados;
+    }
+
+    public void atracarBarco(Barco barco) {
+        barcosAtracados.add(barco);
+        System.out.println("Barco " + barco.getNome() + " atracado no " + nome);
+    }
+
+    public void desatracarBarco(Barco barco) {
+        barcosAtracados.remove(barco);
+        System.out.println("Barco " + barco.getNome() + " desatracado do " + nome);
+    }
+}
+
+// Classe PortoPequeno
+class PortoPequeno extends BasePorto {
+
+    public PortoPequeno(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void atracarBarco(Barco barco) {
+        if (barco.getTamanho() <= 10) {
+            super.atracarBarco(barco);
+        } else {
+            System.out.println("Barco " + barco.getNome() + " não pode ser atracado no " + getNome() + " devido ao tamanho.");
+        }
+    }
+}
+
+// Classe PortoGrande
+class PortoGrande extends BasePorto {
+
+    public PortoGrande(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void atracarBarco(Barco barco) {
+        if (barco.getTamanho() >= 10) {
+            super.atracarBarco(barco);
+        } else {
+            System.out.println("Barco " + barco.getNome() + " não pode ser atracado no " + getNome() + " devido ao tamanho.");
+        }
+    }
+}
+
+// Classe Principal com o método main
+public class Main {
+    public static void main(String[] args) {
+        // Criando barcos com diferentes tamanhos
+        Barco barcoPequeno1 = new Barco("Pequeno Alpha", 2);
+        Barco barcoPequeno2 = new Barco("Pequeno Beta", 5);
+        Barco barcoPequeno3 = new Barco("Pequeno Gamma", 7);
+        Barco barcoGrande1 = new Barco("Grande Delta", 12);
+        Barco barcoGrande2 = new Barco("Grande Epsilon", 28);
+
+        // Adicionando os barcos em uma lista
+        List<Barco> listaDeBarcos = new ArrayList<>();
+        listaDeBarcos.add(barcoPequeno1);
+        listaDeBarcos.add(barcoPequeno2);
+        listaDeBarcos.add(barcoPequeno3);
+        listaDeBarcos.add(barcoGrande1);
+        listaDeBarcos.add(barcoGrande2);
+
+        // Criando os portos
+        PortoPequeno portoPequeno = new PortoPequeno("Porto Pequeno");
+        PortoGrande portoGrande = new PortoGrande("Porto Grande");
+
+        // Tentando atracar cada barco nos portos
+        for (Barco barco : listaDeBarcos) {
+            if (barco.getTamanho() <= 10) {
+                portoPequeno.atracarBarco(barco);
+            } else {
+                portoGrande.atracarBarco(barco);
+            }
+        }
+    }
+}
