@@ -1,0 +1,120 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Usuario {
+    private String nomeUsuario;
+    private int idadeUsuario;
+
+    public Usuario(String nomeUsuario, int idadeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+        this.idadeUsuario = idadeUsuario;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public int getIdadeUsuario() {
+        return idadeUsuario;
+    }
+}
+
+class FilmeCinema {
+    private String tituloFilme;
+    private double valorFilme;
+    private int idadeMinimaFilme;
+
+    public FilmeCinema(String tituloFilme, double valorFilme, int idadeMinimaFilme) {
+        this.tituloFilme = tituloFilme;
+        this.valorFilme = valorFilme;
+        this.idadeMinimaFilme = idadeMinimaFilme;
+    }
+
+    public String getTituloFilme() {
+        return tituloFilme;
+    }
+
+    public double getValorFilme() {
+        return valorFilme;
+    }
+
+    public int getIdadeMinimaFilme() {
+        return idadeMinimaFilme;
+    }
+}
+
+class Ticket {
+    private Usuario usuario;
+    private FilmeCinema filmeCinema;
+    private String numeroAssento;
+
+    public Ticket(Usuario usuario, FilmeCinema filmeCinema, String numeroAssento) {
+        this.usuario = usuario;
+        this.filmeCinema = filmeCinema;
+        this.numeroAssento = numeroAssento;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public FilmeCinema getFilmeCinema() {
+        return filmeCinema;
+    }
+
+    public String getNumeroAssento() {
+        return numeroAssento;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingresso vendido com sucesso! " + filmeCinema.getTituloFilme() + " - " + numeroAssento + " - " + usuario.getNomeUsuario();
+    }
+}
+
+class CinemaApp {
+    private List<FilmeCinema> listaFilmesDisponiveis;
+    private List<Ticket> ticketsVendidos;
+    private List<String> listaAssentosDisponiveis;
+
+    public CinemaApp() {
+        listaFilmesDisponiveis = new ArrayList<>();
+        ticketsVendidos = new ArrayList<>();
+        listaAssentosDisponiveis = new ArrayList<>();
+        inicializarAssentos();
+    }
+
+    private void inicializarAssentos() {
+        char[] linhas = {'A', 'B', 'C', 'D', 'E', 'F'};
+        for (char linha : linhas) {
+            for (int i = 1; i <= 5; i++) {
+                listaAssentosDisponiveis.add(linha + String.valueOf(i));
+            }
+        }
+    }
+
+    public void adicionarFilme(FilmeCinema filmeCinema) {
+        listaFilmesDisponiveis.add(filmeCinema);
+    }
+
+    public FilmeCinema buscarFilmePorTitulo(String titulo) {
+        for (FilmeCinema filmeCinema : listaFilmesDisponiveis) {
+            if (filmeCinema.getTituloFilme().equalsIgnoreCase(titulo)) {
+                return filmeCinema;
+            }
+        }
+        return null;
+    }
+
+    public void venderTicket(Usuario usuario, FilmeCinema filmeCinema, String numeroAssento) throws Exception {
+        if (!listaAssentosDisponiveis.contains(numeroAssento)) {
+            throw new Exception("O ingresso não pode ser vendido pois seu assento não está mais disponível!");
+        }
+
+        if (usuario.getIdadeUsuario() < filmeCinema.getIdadeMinimaFilme()) {
+            throw new Exception("O ingresso não pode ser vendido pois sua idade não permite!");
+        }
+
+        Ticket ticket = new Ticket(usuario, filmeCinema, numeroAssento);
+        ticketsVend
